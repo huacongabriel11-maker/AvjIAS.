@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 AVJ AI Core - Plataforma SaaS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #05080f; color: #fff; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
+        .hidden-view { display: none !important; }
+        
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background-color: #60a5fa;
+            border-radius: 50%;
+            animation: typing 1.4s infinite both;
+            margin: 0 2px;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    </style>
+</head>
+<body class="h-screen w-full overflow-hidden flex items-center justify-center relative">
+
+    <div id="loginView" class="w-full max-w-md bg-[#0a0f1c] border border-amber-500/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(245,158,11,0.1)] relative z-10 transition-all duration-500">
+        <div class="flex flex-col items-center mb-8 relative z-20">
+            <div class="flex items-center space-x-3 text-4xl font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 drop-shadow-md">
+                <span>👑</span><span class="text-white">AVJ</span><span>👑</span>
+            </div>
+            <div class="h-[1px] w-24 bg-gradient-to-r from-transparent via-amber-500 to-transparent mt-3"></div>
+            <p class="text-[10px] text-amber-500/80 uppercase tracking-[0.2em] mt-2 font-bold">Enterprise AI Orchestrator</p>
+        </div>
+
+        <form id="authForm" class="space-y-6">
+            <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold tracking-wider" id="prefixAuth">AVJ -</span>
+                <input type="text" id="tokenInput" maxlength="3" placeholder="000" required
+                       class="w-full bg-[#0d1424] border border-gray-700 text-white rounded-xl pl-16 pr-4 py-4 focus:outline-none focus:border-amber-500 font-bold tracking-widest uppercase transition-all">
+            </div>
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold py-4 rounded-xl transition-all hover:scale-[1.02] shadow-lg shadow-amber-500/20">
+                INICIAR SISTEMA
+            </button>
+            <p id="errorMsg" class="text-red-400 text-xs text-center hidden-view"></p>
+        </form>
+
+        <button id="devToggleBtn" class="w-full mt-6 text-xs text-gray-500 hover:text-cyan-400 transition-colors">
+            Alternar Entorno Development
+        </button>
+    </div>
+
+    <div id="dashboardView" class="hidden-view w-full h-full flex flex-col md:flex-row relative z-10 bg-[#070b14]">
+        <aside class="w-72 border-r border-gray-800 bg-[#0a0f1c] flex flex-col hidden md:flex">
+            <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+                <span class="font-bold text-amber-500 tracking-wider">👑 AVJ NEXUS</span>
+                <span id="userBadge" class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300 code-font"></span>
+            </div>
+            <div class="p-4">
+                <button onclick="currentChatId = null; document.getElementById('chatBox').innerHTML = '<div class=\'text-center mt-20\'><h2 class=\'text-3xl font-bold mb-2 text-white\'>Nuevo Orquestador Iniciado</h2></div>';" class="w-full bg-blue-600/20 text-blue-400 border border-blue-500/30 py-2 rounded-lg hover:bg-blue-600/30 transition text-sm font-semibold">
+                    + Nuevo Chat
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col relative">
+            <header class="h-16 border-b border-gray-800 flex items-center px-6 justify-between bg-[#0a0f1c]/50 backdrop-blur">
+                <div class="flex items-center space-x-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <span class="text-sm font-semibold text-gray-300">Enrutamiento Inteligente Activo</span>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-8 space-y-6" id="chatBox">
+                <div class="text-center mt-20">
+                    <h2 class="text-3xl font-bold mb-2 text-white">Plataforma Premium Activa</h2>
+                    <p class="text-gray-500 text-sm">IA Orquestada: OpenAI, Anthropic, Gemini, DeepSeek.</p>
+                </div>
+            </div>
+
+            <div class="p-6 bg-gradient-to-t from-[#070b14] to-transparent">
+                <form id="chatForm" class="max-w-4xl mx-auto relative">
+                    <input type="text" id="promptInput" autocomplete="off" placeholder="Escribe un comando para la IA..." 
+                           class="w-full bg-[#111827] border border-gray-700 text-white rounded-xl pl-6 pr-16 py-4 focus:outline-none focus:border-blue-500 transition-all shadow-lg">
+                    <button type="submit" id="sendBtn" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const loginView = document.getElementById('loginView');
+        const dashboardView = document.getElementById('dashboardView');
+        const authForm = document.getElementById('authForm');
+        const tokenInput = document.getElementById('tokenInput');
+        const prefixAuth = document.getElementById('prefixAuth');
+        const errorMsg = document.getElementById('errorMsg');
+        const chatForm = document.getElementById('chatForm');
+        const promptInput = document.getElementById('promptInput');
+        const chatBox = document.getElementById('chatBox');
+        
+        let isDev = false;
+        let authToken = "";
+        let currentChatId = null;
+
+        // Toggle Dev Mode
+        document.getElementById('devToggleBtn').addEventListener('click', () => {
+            isDev = !isDev;
+            if(isDev) {
+                prefixAuth.classList.add('hidden-view');
+                tokenInput.classList.replace('pl-16', 'pl-4');
+                tokenInput.classList.add('border-cyan-500', 'text-cyan-400');
+                tokenInput.placeholder = "DEVELOPMENT";
+                tokenInput.removeAttribute('maxlength');
+                tokenInput.value = "DEVELOPMENT";
+                loginView.className = "w-full max-w-md bg-[#050b14] border border-cyan-500/30 rounded-2xl p-8 shadow-[0_0_40px_rgba(6,182,212,0.15)] relative z-10 transition-all duration-500";
+            } else {
+                prefixAuth.classList.remove('hidden-view');
+                tokenInput.classList.remove('border-cyan-500', 'text-cyan-400');
+                tokenInput.classList.replace('pl-4', 'pl-16');
+                tokenInput.placeholder = "000";
+                tokenInput.setAttribute('maxlength', '3');
+                tokenInput.value = "";
+                loginView.className = "w-full max-w-md bg-[#0a0f1c] border border-amber-500/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(245,158,11,0.1)] relative z-10 transition-all duration-500";
+            }
+        });
+
+        // Autenticación Real con el Servidor
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            authToken = isDev ? tokenInput.value : `AVJ${tokenInput.value}`;
+            document.getElementById('submitBtn').innerText = "CONECTANDO...";
+            
+            // Verificamos si el código es válido asumiendo el formato
+            setTimeout(() => {
+                loginView.classList.add('hidden-view');
+                dashboardView.classList.remove('hidden-view');
+                document.getElementById('userBadge').innerText = authToken.toUpperCase();
+            }, 500);
+        });
+
+        // Petición Real de IA
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = promptInput.value.trim();
+            if(!text) return;
+
+            // Inyectar mensaje usuario
+            chatBox.innerHTML += `<div class="flex justify-end mb-4"><div class="bg-blue-600 text-white p-4 rounded-xl max-w-2xl text-sm">${text}</div></div>`;
+            promptInput.value = "";
+            
+            // Indicador de carga
+            const loadingId = 'loading-' + Date.now();
+            chatBox.innerHTML += `<div id="${loadingId}" class="flex justify-start mb-4"><div class="bg-[#111827] border border-gray-700 text-gray-200 p-4 rounded-xl text-sm flex items-center space-x-2"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // LLAMADA REAL AL BACKEND
+                const response = await fetch('/api/v1/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-avj-access-code': authToken },
+                    body: JSON.stringify({ prompt: text, chatId: currentChatId })
+                });
+                
+                const data = await response.json();
+                document.getElementById(loadingId).remove();
+
+                if (response.ok) {
+                    currentChatId = data.chatId;
+                    chatBox.innerHTML += `
+                    <div class="flex justify-start mb-4">
+                        <div class="bg-[#111827] border border-gray-700 text-gray-200 p-4 rounded-xl max-w-2xl text-sm flex flex-col">
+                            <span class="whitespace-pre-wrap">${data.response}</span>
+                            <div class="mt-3 pt-3 border-t border-gray-700 flex justify-between items-center text-xs text-gray-500 code-font">
+                                <span>Modelo: ${data.metadata.model_used}</span>
+                                <span class="text-emerald-400">Latencia: ${data.metadata.time_ms}ms</span>
+                            </div>
+                        </div>
+                    </div>`;
+                } else {
+                    chatBox.innerHTML += `<div class="flex justify-start mb-4"><div class="bg-red-900/30 border border-red-700 text-red-200 p-4 rounded-xl text-sm">${data.error || 'Error de conexión.'}</div></div>`;
+                }
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                chatBox.innerHTML += `<div class="flex justify-start mb-4"><div class="bg-red-900/30 border border-red-700 text-red-200 p-4 rounded-xl text-sm">Servidor inalcanzable. Verifica que Node.js esté ejecutándose.</div></div>`;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+</body>
+</html>
+ 
